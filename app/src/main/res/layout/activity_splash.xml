@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     tools:context=".SplashActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/splashscreen"
-        android:scaleType="fitXY"></ImageView>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:src="@drawable/untitled"/>
 
 </LinearLayout>

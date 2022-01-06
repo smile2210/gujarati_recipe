@@ -2,6 +2,7 @@ package com.example.gujaratirecipe;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerview);
@@ -65,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         indicator.setViewPager(viewPager);
-        viewPager.startAutoScroll(250);
         ViewPageAdapter adapter1 = new ViewPageAdapter(MainActivity.this,img);
         viewPager.setAdapter(adapter1);
+        viewPager.startAutoScroll();
 
         RecyclerView.LayoutManager manager = new GridLayoutManager(MainActivity.this,2,RecyclerView.VERTICAL,false);
         MainAdapter adapter = new MainAdapter(MainActivity.this,database);

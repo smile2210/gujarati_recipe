@@ -51,7 +51,9 @@
         <me.angeldevil.autoscrollviewpager.AutoScrollViewPager
             android:id="@+id/mainviewpager"
             android:layout_width="match_parent"
-            android:layout_height="250dp"></me.angeldevil.autoscrollviewpager.AutoScrollViewPager>
+            android:layout_height="250dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:scrollbarStyle="insideOverlay"></me.angeldevil.autoscrollviewpager.AutoScrollViewPager>
 
         <com.rd.PageIndicatorView
             android:id="@+id/indicator"
