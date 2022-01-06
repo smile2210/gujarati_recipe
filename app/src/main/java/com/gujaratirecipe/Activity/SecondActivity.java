@@ -1,4 +1,4 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,11 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.gujaratirecipe.Adapter.MainAdapter;
+import com.gujaratirecipe.R;
+import com.gujaratirecipe.Adapter.SecondAdapter;
+import com.gujaratirecipe.Model.SecondModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,16 +54,18 @@ public class SecondActivity extends AppCompatActivity {
         }
 
 
-        SecondAdapter secondAdapter = new SecondAdapter(SecondActivity.this, secondModelList,MainAdapter.modelList);
+        SecondAdapter secondAdapter = new SecondAdapter(SecondActivity.this, secondModelList, MainAdapter.modelList);
         list.setAdapter(secondAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(SecondActivity.this,ThirdActivity.class);
-                intent.putExtra("image2",pic2[i]);
+                intent.putExtra("image2",secondModelList.get(i));
                 intent.putExtra("name",MainAdapter.modelList.get(i).getName());
                 intent.putExtra("sahitya",MainAdapter.modelList.get(i).getSahitya());
                 intent.putExtra("kruti",MainAdapter.modelList.get(i).getKruti());
+                intent.putExtra("type_id",MainAdapter.modelList.get(i).getType_id());
+                intent.putExtra("row_id",MainAdapter.modelList.get(i).getRow_id());
                 startActivity(intent);
             }
         });

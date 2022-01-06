@@ -1,4 +1,4 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gujaratirecipe.Activity.SecondActivity;
+import com.gujaratirecipe.Model.Model;
+import com.gujaratirecipe.R;
+import com.gujaratirecipe.Model.SecondModel;
 
 import java.util.List;
 
@@ -17,7 +21,7 @@ public class SecondAdapter extends BaseAdapter {
     List<SecondModel> secondModelList;
     List<Model> modelList;
 
-    public SecondAdapter(SecondActivity secondActivity, List<SecondModel> secondModelList, List<Model> modelList) {
+    public SecondAdapter(Activity secondActivity, List<SecondModel> secondModelList, List<Model> modelList) {
         activity = secondActivity;
         this.secondModelList = secondModelList;
         this.modelList = modelList;

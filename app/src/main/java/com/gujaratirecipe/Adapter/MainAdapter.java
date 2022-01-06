@@ -1,5 +1,6 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,6 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.gujaratirecipe.Activity.MainActivity;
+import com.gujaratirecipe.Activity.SecondActivity;
+import com.gujaratirecipe.Database;
+import com.gujaratirecipe.Model.Model;
+import com.gujaratirecipe.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +57,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MainHolder holder, @SuppressLint("RecyclerView") final int position) {
         Glide.with(activity).load(pic[position]).into(holder.image);
         holder.textView.setText(name[position]);
 
@@ -70,10 +76,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model1.setName(models.get(i).getName());
                         model1.setSahitya(models.get(i).getSahitya());
                         model1.setKruti(models.get(i).getKruti());
+                        model1.setType_id(models.get(i).getType_id());
+                        model1.setRow_id(models.get(i).getRow_id());
                         modelList.add(model1);
                     }
                     B = rotipic;
-                } else if (position == 1) {
+                }else if (position == 1) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -82,6 +90,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model2.setName(models.get(i).getName());
                         model2.setSahitya(models.get(i).getSahitya());
                         model2.setKruti(models.get(i).getKruti());
+                        model2.setType_id(models.get(i).getType_id());
+                        model2.setRow_id(models.get(i).getRow_id());
                         modelList.add(model2);
                     }
                     B = sabjipic;
@@ -94,6 +104,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = nastapic;
@@ -106,6 +118,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = mithaipic;
@@ -118,6 +132,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = falalivangi;
@@ -130,6 +146,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = icepic;
@@ -142,6 +160,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = healthy;
@@ -154,6 +174,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = festival;
@@ -166,6 +188,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = children;
@@ -178,6 +202,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = rayta;
@@ -190,6 +216,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         model3.setName(models.get(i).getName());
                         model3.setSahitya(models.get(i).getSahitya());
                         model3.setKruti(models.get(i).getKruti());
+                        model3.setType_id(models.get(i).getType_id());
+                        model3.setRow_id(models.get(i).getRow_id());
                         modelList.add(model3);
                     }
                     B = diabitees;

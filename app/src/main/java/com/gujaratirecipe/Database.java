@@ -1,4 +1,4 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import com.gujaratirecipe.Model.Model;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -92,8 +94,10 @@ public class Database extends SQLiteOpenHelper {
             String names = cursor.getString(0);
             String sahityas = cursor.getString(1);
             String krutis = cursor.getString(2);
+            int type_id = cursor.getInt(3);
+            int row_id = cursor.getInt(4);
 
-            Model model = new Model(names,sahityas,krutis);
+            Model model = new Model(names,sahityas,krutis,type_id,row_id);
             modelList.add(model);
             cursor.moveToNext();
         }

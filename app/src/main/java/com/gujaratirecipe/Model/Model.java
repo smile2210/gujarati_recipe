@@ -1,15 +1,21 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Model;
 
-public class Model {
+import java.io.Serializable;
+
+public class Model implements Serializable {
     String name;
     String sahitya;
     String kruti;
+    int type_id;
+    int row_id;
 
 
-    public Model(String name, String sahitya, String kruti) {
+    public Model(String name, String sahitya, String kruti, int type_id, int row_id) {
         this.name = name;
         this.sahitya = sahitya;
         this.kruti = kruti;
+        this.type_id = type_id;
+        this.row_id = row_id;
     }
 
     public Model() {
@@ -40,4 +46,19 @@ public class Model {
         this.kruti = kruti;
     }
 
+    public int getType_id() {
+        return type_id;
+    }
+
+    public void setType_id(int type_id) {
+        this.type_id = type_id;
+    }
+
+    public int getRow_id() {
+        return row_id;
+    }
+
+    public void setRow_id(int row_id) {
+        this.row_id = row_id;
+    }
 }

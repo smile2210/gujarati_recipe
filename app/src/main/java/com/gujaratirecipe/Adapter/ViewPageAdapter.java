@@ -1,4 +1,4 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.gujaratirecipe.Activity.MainActivity;
+import com.gujaratirecipe.R;
 
 public class ViewPageAdapter extends PagerAdapter {
     Activity activity;

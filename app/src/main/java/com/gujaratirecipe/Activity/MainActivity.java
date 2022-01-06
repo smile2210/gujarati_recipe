@@ -1,12 +1,12 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -14,6 +14,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.gujaratirecipe.Database;
+import com.gujaratirecipe.Adapter.MainAdapter;
+import com.gujaratirecipe.R;
+import com.gujaratirecipe.Adapter.ViewPageAdapter;
 import com.rd.PageIndicatorView;
 
 import me.angeldevil.autoscrollviewpager.AutoScrollViewPager;
@@ -57,9 +61,14 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.favourites:
+                        drawerLayout.closeDrawers();
+                        startActivity(new Intent(MainActivity.this,FavActivity.class));
                         break;
 
                     case R.id.info:
+                        break;
+
+                    case R.id.share:
                         break;
                 }
                 return false;

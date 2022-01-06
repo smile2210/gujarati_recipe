@@ -1,10 +1,12 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.gujaratirecipe.R;
 
 public class SplashActivity extends AppCompatActivity {
 

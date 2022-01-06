@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    compileSdkVersion 32
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.gujaratirecipe"
-        minSdkVersion 15
-        targetSdkVersion 30
+        applicationId "com.gujaratirecipe"
+        minSdkVersion 16
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
@@ -38,6 +38,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'me.angeldevil:AutoScrollViewPager:1.0.8'
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
+    implementation 'com.google.code.gson:gson:2.8.8'
 
 
 }

@@ -1,4 +1,4 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Adapter;
 
 import android.widget.Switch;
 
@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.gujaratirecipe.Fragment.RitFragment;
-import com.example.gujaratirecipe.Fragment.SamgriFragment;
+import com.gujaratirecipe.Fragment.RitFragment;
+import com.gujaratirecipe.Fragment.SamgriFragment;
 
 public class FragmentAdapter extends FragmentPagerAdapter {
     public FragmentAdapter(@NonNull FragmentManager fm) {

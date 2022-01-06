@@ -1,4 +1,4 @@
-package com.example.gujaratirecipe.Fragment;
+package com.gujaratirecipe.Fragment;
 
 import android.os.Bundle;
 
@@ -9,22 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.gujaratirecipe.MainAdapter;
-import com.example.gujaratirecipe.R;
-import com.example.gujaratirecipe.ThirdActivity;
+import com.gujaratirecipe.R;
+import com.gujaratirecipe.Activity.ThirdActivity;
 
+public class SamgriFragment extends Fragment {
 
-public class RitFragment extends Fragment {
-    TextView rittext;
+    TextView samgritext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_rit, container, false);
-        rittext = view.findViewById(R.id.rittext);
-        rittext.setText(ThirdActivity.rit);
-
+        View view = inflater.inflate(R.layout.fragment_samgri, container, false);
+        samgritext = view.findViewById(R.id.samgritext);
+        samgritext.setText(ThirdActivity.samgri);
         return view;
     }
 }

@@ -1,6 +1,8 @@
-package com.example.gujaratirecipe;
+package com.gujaratirecipe.Model;
 
-public class SecondModel {
+import java.io.Serializable;
+
+public class SecondModel implements Serializable {
     int pic2;
 
     public int getPic2() {
