@@ -37,12 +37,6 @@ public class FavActivity extends AppCompatActivity {
 
         tinyDB = new TinyDB(FavActivity.this);
 
-        modellist = new ArrayList<>();
-        secondModelList = new ArrayList<>();
-
-        modellist = (ArrayList<Model>) tinyDB.getListModel("modellist",Model.class);
-        secondModelList = (ArrayList<SecondModel>) tinyDB.getListModel("secondmodellist",SecondModel.class);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,8 +44,6 @@ public class FavActivity extends AppCompatActivity {
             }
         });
 
-        SecondAdapter secondAdapter = new SecondAdapter(FavActivity.this, secondModelList, modellist);
-        list.setAdapter(secondAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -65,5 +57,19 @@ public class FavActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        modellist = new ArrayList<>();
+        secondModelList = new ArrayList<>();
+
+        modellist = (ArrayList<Model>) tinyDB.getListModel("modellist",Model.class);
+        secondModelList = (ArrayList<SecondModel>) tinyDB.getListModel("secondmodellist",SecondModel.class);
+
+        SecondAdapter secondAdapter = new SecondAdapter(FavActivity.this, secondModelList, modellist);
+        list.setAdapter(secondAdapter);
     }
 }

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#DC9E54"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
@@ -35,21 +36,37 @@
             android:id="@+id/like"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:paddingHorizontal="2dp"
             android:layout_gravity="center_vertical"
-            android:paddingVertical="8dp"
             android:layout_marginRight="12dp"
-            android:background="@drawable/ic_favorite_border"></androidx.appcompat.widget.AppCompatButton>
+            android:background="@drawable/ic_favorite_border"
+            android:paddingHorizontal="2dp"
+            android:paddingVertical="8dp"></androidx.appcompat.widget.AppCompatButton>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/shareAsPdf"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/pdf"
+            android:backgroundTint="#ffffff"
+            android:paddingHorizontal="2dp"
+            android:paddingVertical="8dp"></androidx.appcompat.widget.AppCompatButton>
 
     </LinearLayout>
 
-
-    <ImageView
-        android:id="@+id/image2"
+    <LinearLayout
+        android:id="@+id/mainLinear"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/s14"></ImageView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/s14"></ImageView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,4 +85,7 @@
                 android:layout_height="match_parent"
                 android:background="#F7F2ED"></androidx.viewpager.widget.ViewPager>
         </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

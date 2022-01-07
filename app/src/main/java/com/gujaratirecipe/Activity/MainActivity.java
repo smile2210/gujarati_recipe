@@ -65,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this,FavActivity.class));
                         break;
 
-                    case R.id.info:
-                        break;
-
                     case R.id.share:
                         break;
                 }
