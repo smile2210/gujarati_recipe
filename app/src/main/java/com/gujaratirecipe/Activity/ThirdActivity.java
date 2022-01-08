@@ -12,17 +12,30 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,24 +53,32 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ThirdActivity extends AppCompatActivity {
 
-    ImageView back,image,image2;
+    ImageView back, image, image2;
     TextView recepi;
     TabLayout tabLayout;
     ViewPager viewPager;
-    AppCompatButton like,shareAsPdf;
+    AppCompatButton like, shareAsPdf;
     public static String samgri;
     public static String rit;
-    int type_id,row_id;
+    int type_id, row_id;
     TinyDB tinydb;
     ArrayList<Model> modellist = new ArrayList<>();
     ArrayList<SecondModel> secondmodellist = new ArrayList<>();
     boolean liked = false;
     SecondModel secondModel = new SecondModel();
 
-    int pageHeight = 1120;
+
+    LinearLayout linearLayout;
+    TextView title, samgritext, rittext;
+    ImageView recipe_image;
+    Bitmap bitmap;
+
+    int pageHeight = 1520;
     int pagewidth = 792;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
@@ -66,6 +87,10 @@ public class ThirdActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         back = findViewById(R.id.back);
         image2 = findViewById(R.id.image2);
         image = findViewById(R.id.image);
@@ -74,6 +99,12 @@ public class ThirdActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewpager);
         like = findViewById(R.id.like);
         shareAsPdf = findViewById(R.id.shareAsPdf);
+
+        linearLayout = findViewById(R.id.sharepdflayout);
+        title = findViewById(R.id.title);
+        samgritext = findViewById(R.id.samgritext);
+        rittext = findViewById(R.id.rittext);
+        recipe_image = findViewById(R.id.recipe_image);
 
         tinydb = new TinyDB(ThirdActivity.this);
         like.setEnabled(true);
@@ -88,18 +119,18 @@ public class ThirdActivity extends AppCompatActivity {
         modellist = new ArrayList<>();
         secondmodellist = new ArrayList<>();
 
-        modellist = (ArrayList<Model>) tinydb.getListModel("modellist",Model.class);
-        secondmodellist = (ArrayList<SecondModel>) tinydb.getListModel("secondmodellist",SecondModel.class);
+        modellist = (ArrayList<Model>) tinydb.getListModel("modellist", Model.class);
+        secondmodellist = (ArrayList<SecondModel>) tinydb.getListModel("secondmodellist", SecondModel.class);
 
 
         secondModel = (SecondModel) getIntent().getExtras().get("image2");
 
         Glide.with(ThirdActivity.this).load(secondModel.getPic2()).into(image2);
         recepi.setText(getIntent().getStringExtra("name"));
-        type_id = getIntent().getIntExtra("type_id",0);
-        row_id = getIntent().getIntExtra("row_id",0);
+        type_id = getIntent().getIntExtra("type_id", 0);
+        row_id = getIntent().getIntExtra("row_id", 0);
 
-        for (Model model : modellist){
+        for (Model model : modellist) {
             if(model.getType_id() == type_id && model.getRow_id() == row_id){
                 like.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_favorite));
                 liked = true;
@@ -136,8 +167,7 @@ public class ThirdActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-
-                if(!liked){
+                if(! liked){
                     like.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_favorite));
                     liked = true;
 
@@ -151,18 +181,18 @@ public class ThirdActivity extends AppCompatActivity {
                     modellist.add(model);
                     secondmodellist.add(secondModel);
 
-                }else {
+                }else{
                     like.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_favorite_border));
                     liked = false;
 
-                    for (Model model : modellist){
+                    for (Model model : modellist) {
                         if(model.getType_id() == type_id && model.getRow_id() == row_id){
                             modellist.remove(model);
                             break;
                         }
                     }
 
-                    for (SecondModel secondModel1 : secondmodellist){
+                    for (SecondModel secondModel1 : secondmodellist) {
                         if(secondModel1.getPic2() == secondModel.getPic2()){
                             secondmodellist.remove(secondModel1);
                             break;
@@ -171,9 +201,8 @@ public class ThirdActivity extends AppCompatActivity {
 
                 }
 
-                tinydb.putListModel("modellist",modellist);
-                tinydb.putListModel("secondmodellist",secondmodellist);
-
+                tinydb.putListModel("modellist", modellist);
+                tinydb.putListModel("secondmodellist", secondmodellist);
 
 
             }
@@ -182,14 +211,19 @@ public class ThirdActivity extends AppCompatActivity {
         samgri = (getIntent().getStringExtra("sahitya"));
         rit = (getIntent().getStringExtra("kruti"));
 
+
+        title.setText(recepi.getText().toString());
+        Glide.with(ThirdActivity.this).load(secondModel.getPic2()).into(recipe_image);
+        samgritext.setText(samgri);
+        rittext.setText(rit);
+
         shareAsPdf.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                if (checkPermission()) {
-                    Toast.makeText(ThirdActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-                    shareAsPdffile();
-                } else {
+                if(checkPermission()){
+                    generatePDF(recepi.getText().toString(), secondModel.getPic2(), samgri, rit);
+                }else{
                     requestPermission();
                 }
             }
@@ -197,31 +231,115 @@ public class ThirdActivity extends AppCompatActivity {
 
     }
 
-    private void shareAsPdffile() {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void generatePDF(String s, int pic2, String samgri, String rit) {
 
-        LinearLayout linearLayout = findViewById(R.id.mainLinear);
+        PdfDocument pdfDocument = new PdfDocument();
 
-        View screenView = linearLayout.getRootView();
-        screenView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
-        screenView.setDrawingCacheEnabled(false);
+        Paint paint = new Paint();
+        Paint title = new Paint();
 
-        store(bitmap,"recipe.jpg");
+        PdfDocument.PageInfo mypageInfo = new PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create();
+
+        PdfDocument.Page myPage = pdfDocument.startPage(mypageInfo);
+        Canvas canvas = myPage.getCanvas();
+
+        //Title
+        title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        title.setTextAlign(Paint.Align.CENTER);
+        title.setTextSize(40);
+        title.setColor(ContextCompat.getColor(this, android.R.color.black));
+        canvas.drawText(s, pagewidth / 2, 50, title);
+
+        // pic
+        bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), pic2), pagewidth/3, 200, true);
+        canvas.drawBitmap(bitmap, pagewidth / 3, 100, paint);
+
+        // samgri
+
+        title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        title.setColor(ContextCompat.getColor(this, android.R.color.black));
+        title.setTextSize(40);
+        title.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText("સામગ્રી : ", pagewidth/10, 350, title);
+
+        TextPaint mTextPaint = new TextPaint();
+        mTextPaint.setTextSize(23);
+        mTextPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        mTextPaint.setColor(ContextCompat.getColor(this, android.R.color.black));
+        StaticLayout mTextLayout = new StaticLayout( samgri ,mTextPaint, canvas.getWidth() - 100, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
+        canvas.save();
+        int textX = pagewidth/17;
+        int textY = 400;
+        canvas.translate(textX, textY);
+        mTextLayout.draw(canvas);
+        canvas.restore();
+
+        pdfDocument.finishPage(myPage);
+
+        //Create 2nd page
+
+        PdfDocument.PageInfo mypageInfo1 = new PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 2).create();
+
+        PdfDocument.Page myPage1 = pdfDocument.startPage(mypageInfo1);
+        Canvas canvas1 = myPage1.getCanvas();
+
+        // rit
+
+        title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        title.setColor(ContextCompat.getColor(this, android.R.color.black));
+        title.setTextSize(40);
+        title.setTextAlign(Paint.Align.CENTER);
+        canvas1.drawText("રીત : ", pagewidth/10, 100, title);
+
+
+        TextPaint mTextPaint1 = new TextPaint();
+        mTextPaint1.setTextSize(23);
+        mTextPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        mTextPaint.setColor(ContextCompat.getColor(this, android.R.color.black));
+        StaticLayout mTextLayout1 = new StaticLayout( rit ,mTextPaint1, canvas1.getWidth() - 100, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
+        canvas1.save();
+        int textX1 = pagewidth/17;
+        int textY1 = 150;
+        canvas1.translate(textX1, textY1);
+
+        mTextLayout1.draw(canvas1);
+        canvas1.restore();
+
+        pdfDocument.finishPage(myPage1);
+
+
+        // below line is used to set the name of
+        // our PDF file and its path.
+
+        String path = Environment.getExternalStorageDirectory() + "/Gujarati_recipe";
+        File dir = new File(path);
+        if(! dir.exists())
+            dir.mkdirs();
+
+        File filePath = new File(dir, s + ".pdf");
+
+        try {
+            pdfDocument.writeTo(new FileOutputStream(filePath));
+            Toast.makeText(ThirdActivity.this, "PDF file generated successfully.", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        pdfDocument.close();
+
+        shareFile(filePath);
     }
 
-    public static void store(Bitmap bm, String fileName){
-        final String dirPath = Environment.getExternalStorageDirectory() + "/Gujarati_recipe_Screenshots";
-        File dir = new File(dirPath);
-        if(!dir.exists())
-            dir.mkdirs();
-        File file = new File(dirPath, fileName);
-        try {
-            FileOutputStream fOut = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+
+    public void shareFile(File myFile){
+        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        if(myFile.exists()) {
+            intentShareFile.setType("application/pdf");
+            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+myFile));
+            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Sharing File from Gujarati Recipe...");
+            startActivity(Intent.createChooser(intentShareFile, "Share File Gujarati Recipe"));
         }
     }
 
@@ -242,17 +360,17 @@ public class ThirdActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0) {
+        if(requestCode == PERMISSION_REQUEST_CODE){
+            if(grantResults.length > 0){
 
                 // after requesting permissions we are showing
                 // users a toast message of permission granted.
                 boolean writeStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 boolean readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
-                if (writeStorage && readStorage) {
-                    Toast.makeText(this, "Permission Granted..", Toast.LENGTH_SHORT).show();
-                } else {
+                if(writeStorage && readStorage){
+                    generatePDF(recepi.getText().toString(), secondModel.getPic2(), samgri, rit);
+                }else{
                     Toast.makeText(this, "Permission Denined.", Toast.LENGTH_SHORT).show();
                 }
             }

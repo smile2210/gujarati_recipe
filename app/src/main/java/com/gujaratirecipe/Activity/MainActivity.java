@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.gujaratirecipe.BuildConfig;
 import com.gujaratirecipe.Database;
 import com.gujaratirecipe.Adapter.MainAdapter;
 import com.gujaratirecipe.R;
@@ -66,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.share:
+                        Intent intent =new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Android Studio Pro");
+                        intent.putExtra(Intent.EXTRA_TEXT, "http://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID);
+                        intent.setType("text/plain");
+                        startActivity(intent);
                         break;
                 }
                 return false;
