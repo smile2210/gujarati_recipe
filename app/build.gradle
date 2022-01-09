@@ -8,8 +8,8 @@ android {
         applicationId "com.gujaratirecipe"
         minSdkVersion 16
         targetSdkVersion 32
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName '1.1'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,6 +39,8 @@ dependencies {
     implementation 'me.angeldevil:AutoScrollViewPager:1.0.8'
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
     implementation 'com.google.code.gson:gson:2.8.8'
+
+    implementation 'com.google.android.gms:play-services-ads:19.6.0'
 
 
 }

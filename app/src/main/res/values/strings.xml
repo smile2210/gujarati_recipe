@@ -2,4 +2,5 @@
     <string name="app_name">Gujarati Recipe</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5224318517283869/2847665823</string>
 </resources>

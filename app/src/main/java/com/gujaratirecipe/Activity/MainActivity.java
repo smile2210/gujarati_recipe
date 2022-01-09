@@ -9,11 +9,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
 import com.gujaratirecipe.BuildConfig;
 import com.gujaratirecipe.Database;
@@ -21,6 +31,8 @@ import com.gujaratirecipe.Adapter.MainAdapter;
 import com.gujaratirecipe.R;
 import com.gujaratirecipe.Adapter.ViewPageAdapter;
 import com.rd.PageIndicatorView;
+
+import java.util.Arrays;
 
 import me.angeldevil.autoscrollviewpager.AutoScrollViewPager;
 
@@ -34,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     Database database;
     AutoScrollViewPager viewPager;
     PageIndicatorView indicator;
+    private AdView adView;
 
     int[] img = new int[]{R.drawable.nasta,R.drawable.mithai,R.drawable.icecremsarbat,R.drawable.festival,R.drawable.child};
 
@@ -49,6 +62,19 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation);
         viewPager = findViewById(R.id.mainviewpager);
         indicator = findViewById(R.id.indicator);
+        adView = findViewById(R.id.ad_view);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+
+        // Create an ad request.
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
+
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,5 +115,31 @@ public class MainActivity extends AppCompatActivity {
         MainAdapter adapter = new MainAdapter(MainActivity.this,database);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    /** Called when returning to the activity */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    /** Called before the activity is destroyed */
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 }

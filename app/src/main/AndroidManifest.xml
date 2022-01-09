@@ -26,6 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5224318517283869~8790968086"/>
         <activity android:name=".Activity.MainActivity" />
         <provider
             android:name="androidx.core.content.FileProvider"

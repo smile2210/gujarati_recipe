@@ -42,6 +42,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.material.tabs.TabLayout;
 import com.gujaratirecipe.Adapter.FragmentAdapter;
 import com.gujaratirecipe.Model.Model;
@@ -53,8 +59,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ThirdActivity extends AppCompatActivity {
 
@@ -83,6 +87,9 @@ public class ThirdActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 200;
 
+    private InterstitialAd interstitialAd;
+    private static final String AD_UNIT_ID = "ca-app-pub-5224318517283869/9728768940";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +97,13 @@ public class ThirdActivity extends AppCompatActivity {
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+
+        loadAd();
+
+        if (!interstitialAd.isLoading() && !interstitialAd.isLoaded()) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            interstitialAd.loadAd(adRequest);
+        }
 
         back = findViewById(R.id.back);
         image2 = findViewById(R.id.image2);
@@ -180,6 +194,7 @@ public class ThirdActivity extends AppCompatActivity {
 
                     modellist.add(model);
                     secondmodellist.add(secondModel);
+                    Toast.makeText(ThirdActivity.this, "Add to Favourite", Toast.LENGTH_SHORT).show();
 
                 }else{
                     like.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_favorite_border));
@@ -198,6 +213,8 @@ public class ThirdActivity extends AppCompatActivity {
                             break;
                         }
                     }
+
+                    Toast.makeText(ThirdActivity.this, "Remove from Favourite", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -229,6 +246,40 @@ public class ThirdActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void loadAd() {
+        interstitialAd = new InterstitialAd(this);
+        // Defined in res/values/strings.xml
+        interstitialAd.setAdUnitId(AD_UNIT_ID);
+
+        interstitialAd.setAdListener(
+                new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+//                        Toast.makeText(ThirdActivity.this, "onAdLoaded()", Toast.LENGTH_SHORT).show();
+                        showInterstitial();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(LoadAdError loadAdError) {
+//                        String error = String.format("domain: %s, code: %d, message: %s", loadAdError.getDomain(), loadAdError.getCode(), loadAdError.getMessage());
+//                        Toast.makeText(ThirdActivity.this, "onAdFailedToLoad() with error: " + error, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAdClosed() {
+
+                    }
+                });
+    }
+
+    private void showInterstitial() {
+        if (interstitialAd != null && interstitialAd.isLoaded()) {
+            interstitialAd.show();
+        } else {
+//            Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -321,7 +372,7 @@ public class ThirdActivity extends AppCompatActivity {
 
         try {
             pdfDocument.writeTo(new FileOutputStream(filePath));
-            Toast.makeText(ThirdActivity.this, "PDF file generated successfully.", Toast.LENGTH_SHORT).show();
+            shareFile(filePath);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
@@ -329,9 +380,7 @@ public class ThirdActivity extends AppCompatActivity {
 
         pdfDocument.close();
 
-        shareFile(filePath);
     }
-
 
     public void shareFile(File myFile){
         Intent intentShareFile = new Intent(Intent.ACTION_SEND);
@@ -375,5 +424,17 @@ public class ThirdActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        // Start or resume the game.
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }
