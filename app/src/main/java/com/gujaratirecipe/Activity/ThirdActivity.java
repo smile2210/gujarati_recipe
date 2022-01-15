@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -363,12 +364,16 @@ public class ThirdActivity extends AppCompatActivity {
         // below line is used to set the name of
         // our PDF file and its path.
 
-        String path = Environment.getExternalStorageDirectory() + "/Gujarati_recipe";
-        File dir = new File(path);
-        if(! dir.exists())
-            dir.mkdirs();
+//        String path = Environment.getExternalStorageDirectory() + "/Gujarati_recipe";
+//        File dir = new File(path);
+//        if(! dir.exists())
+//            dir.mkdirs();
 
-        File filePath = new File(dir, s + ".pdf");
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        if(! path.exists())
+            path.mkdirs();
+
+        File filePath = new File(path,  s + ".pdf");
 
         try {
             pdfDocument.writeTo(new FileOutputStream(filePath));
@@ -384,9 +389,14 @@ public class ThirdActivity extends AppCompatActivity {
 
     public void shareFile(File myFile){
         Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        Uri uri = FileProvider.getUriForFile(ThirdActivity.this, "com.example.homefolder.example.provider", myFile);
+
         if(myFile.exists()) {
             intentShareFile.setType("application/pdf");
-            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+myFile));
+            intentShareFile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intentShareFile.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
             intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Sharing File from Gujarati Recipe...");
             startActivity(Intent.createChooser(intentShareFile, "Share File Gujarati Recipe"));
         }
