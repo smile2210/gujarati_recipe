@@ -81,7 +81,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model1);
                     }
                     B = rotipic;
-                }else if (position == 1) {
+                }
+                else if (position == 1) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -95,7 +96,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model2);
                     }
                     B = sabjipic;
-                }else if (position == 2) {
+                }
+                else if (position == 2) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -109,7 +111,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model3);
                     }
                     B = nastapic;
-                }else if (position == 3) {
+                }
+                else if (position == 3) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -123,7 +126,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model3);
                     }
                     B = mithaipic;
-                }else if (position == 4) {
+                }
+                else if (position == 4) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -137,7 +141,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model3);
                     }
                     B = falalivangi;
-                }else if (position == 5) {
+                }
+                else if (position == 5) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -151,7 +156,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model3);
                     }
                     B = icepic;
-                }else if (position == 6) {
+                }
+                else if (position == 6) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -165,7 +171,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model3);
                     }
                     B = healthy;
-                }else if (position == 7) {
+                }
+                else if (position == 7) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -179,7 +186,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model3);
                     }
                     B = festival;
-                }else if (position == 8) {
+                }
+                else if (position == 8) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -193,7 +201,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model3);
                     }
                     B = children;
-                }else if (position == 9) {
+                }
+                else if (position == 9) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();
@@ -207,7 +216,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
                         modelList.add(model3);
                     }
                     B = rayta;
-                }else if (position == 10) {
+                }
+                else if (position == 10) {
                     database = new Database(activity);
                     modelList = new ArrayList<>();
                     models = database.RetriveData();

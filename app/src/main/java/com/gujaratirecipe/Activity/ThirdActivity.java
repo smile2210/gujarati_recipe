@@ -13,6 +13,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -89,8 +90,9 @@ public class ThirdActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     private InterstitialAd interstitialAd;
-    private static final String AD_UNIT_ID = "ca-app-pub-5224318517283869/9728768940";
+    private static final String AD_UNIT_ID = "ca-app-pub-5224318517283869/7628232091";
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,20 +108,7 @@ public class ThirdActivity extends AppCompatActivity {
             interstitialAd.loadAd(adRequest);
         }
 
-        back = findViewById(R.id.back);
-        image2 = findViewById(R.id.image2);
-        image = findViewById(R.id.image);
-        recepi = findViewById(R.id.recipe);
-        tabLayout = findViewById(R.id.tablayout);
-        viewPager = findViewById(R.id.viewpager);
-        like = findViewById(R.id.like);
-        shareAsPdf = findViewById(R.id.shareAsPdf);
-
-        linearLayout = findViewById(R.id.sharepdflayout);
-        title = findViewById(R.id.title);
-        samgritext = findViewById(R.id.samgritext);
-        rittext = findViewById(R.id.rittext);
-        recipe_image = findViewById(R.id.recipe_image);
+        init();
 
         tinydb = new TinyDB(ThirdActivity.this);
         like.setEnabled(true);
@@ -136,7 +125,6 @@ public class ThirdActivity extends AppCompatActivity {
 
         modellist = (ArrayList<Model>) tinydb.getListModel("modellist", Model.class);
         secondmodellist = (ArrayList<SecondModel>) tinydb.getListModel("secondmodellist", SecondModel.class);
-
 
         secondModel = (SecondModel) getIntent().getExtras().get("image2");
 
@@ -197,7 +185,8 @@ public class ThirdActivity extends AppCompatActivity {
                     secondmodellist.add(secondModel);
                     Toast.makeText(ThirdActivity.this, "Add to Favourite", Toast.LENGTH_SHORT).show();
 
-                }else{
+                }
+                else{
                     like.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_favorite_border));
                     liked = false;
 
@@ -249,16 +238,30 @@ public class ThirdActivity extends AppCompatActivity {
 
     }
 
+    private void init() {
+        back = findViewById(R.id.back);
+        image2 = findViewById(R.id.image2);
+        image = findViewById(R.id.image);
+        recepi = findViewById(R.id.recipe);
+        tabLayout = findViewById(R.id.tablayout);
+        viewPager = findViewById(R.id.viewpager);
+        like = findViewById(R.id.like);
+        shareAsPdf = findViewById(R.id.shareAsPdf);
+        linearLayout = findViewById(R.id.sharepdflayout);
+        title = findViewById(R.id.title);
+        samgritext = findViewById(R.id.samgritext);
+        rittext = findViewById(R.id.rittext);
+        recipe_image = findViewById(R.id.recipe_image);
+    }
+
     public void loadAd() {
         interstitialAd = new InterstitialAd(this);
-        // Defined in res/values/strings.xml
         interstitialAd.setAdUnitId(AD_UNIT_ID);
 
         interstitialAd.setAdListener(
                 new AdListener() {
                     @Override
                     public void onAdLoaded() {
-//                        Toast.makeText(ThirdActivity.this, "onAdLoaded()", Toast.LENGTH_SHORT).show();
                         showInterstitial();
                     }
 

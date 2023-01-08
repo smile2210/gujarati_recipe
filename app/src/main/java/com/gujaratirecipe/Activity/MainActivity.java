@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     Database database;
     AutoScrollViewPager viewPager;
     PageIndicatorView indicator;
-    private AdView adView;
 
     int[] img = new int[]{R.drawable.nasta,R.drawable.mithai,R.drawable.icecremsarbat,R.drawable.festival,R.drawable.child};
 
@@ -62,18 +61,6 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation);
         viewPager = findViewById(R.id.mainviewpager);
         indicator = findViewById(R.id.indicator);
-        adView = findViewById(R.id.ad_view);
-
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {}
-        });
-
-        // Create an ad request.
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        // Start loading the ad in the background.
-        adView.loadAd(adRequest);
 
 
         menu.setOnClickListener(new View.OnClickListener() {
@@ -119,9 +106,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onPause() {
-        if (adView != null) {
-            adView.pause();
-        }
         super.onPause();
     }
 
@@ -129,17 +113,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (adView != null) {
-            adView.resume();
-        }
     }
 
     /** Called before the activity is destroyed */
     @Override
     public void onDestroy() {
-        if (adView != null) {
-            adView.destroy();
-        }
         super.onDestroy();
     }
 }
