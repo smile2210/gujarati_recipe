@@ -1,57 +1,38 @@
 package com.gujaratirecipe.Activity;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.material.tabs.TabLayout;
 import com.gujaratirecipe.Adapter.FragmentAdapter;
+import com.gujaratirecipe.BaseActivity;
 import com.gujaratirecipe.Model.Model;
 import com.gujaratirecipe.Model.SecondModel;
 import com.gujaratirecipe.R;
@@ -62,7 +43,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ThirdActivity extends AppCompatActivity {
+public class ThirdActivity extends BaseActivity {
 
     ImageView back, image, image2;
     TextView recepi;
@@ -77,8 +58,6 @@ public class ThirdActivity extends AppCompatActivity {
     ArrayList<SecondModel> secondmodellist = new ArrayList<>();
     boolean liked = false;
     SecondModel secondModel = new SecondModel();
-
-
     LinearLayout linearLayout;
     TextView title, samgritext, rittext;
     ImageView recipe_image;
@@ -87,28 +66,18 @@ public class ThirdActivity extends AppCompatActivity {
     int pageHeight = 1520;
     int pagewidth = 792;
 
-    private static final int PERMISSION_REQUEST_CODE = 200;
-
-    private InterstitialAd interstitialAd;
-    private static final String AD_UNIT_ID = "ca-app-pub-5224318517283869/7628232091";
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third);
 
+        loadAd();
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        loadAd();
-
-        if (!interstitialAd.isLoading() && !interstitialAd.isLoaded()) {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            interstitialAd.loadAd(adRequest);
-        }
-
-        init();
+        init2();
 
         tinydb = new TinyDB(ThirdActivity.this);
         like.setEnabled(true);
@@ -228,17 +197,18 @@ public class ThirdActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                if(checkPermission()){
-                    generatePDF(recepi.getText().toString(), secondModel.getPic2(), samgri, rit);
-                }else{
-                    requestPermission();
-                }
+                showInterstitial(ThirdActivity.this);
+
             }
         });
 
     }
 
-    private void init() {
+    public void adLoaded() {
+        shareAsPdf.setVisibility(View.VISIBLE);
+    }
+
+    private void init2() {
         back = findViewById(R.id.back);
         image2 = findViewById(R.id.image2);
         image = findViewById(R.id.image);
@@ -254,36 +224,9 @@ public class ThirdActivity extends AppCompatActivity {
         recipe_image = findViewById(R.id.recipe_image);
     }
 
-    public void loadAd() {
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(AD_UNIT_ID);
 
-        interstitialAd.setAdListener(
-                new AdListener() {
-                    @Override
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(LoadAdError loadAdError) {
-//                        String error = String.format("domain: %s, code: %d, message: %s", loadAdError.getDomain(), loadAdError.getCode(), loadAdError.getMessage());
-//                        Toast.makeText(ThirdActivity.this, "onAdFailedToLoad() with error: " + error, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                    }
-                });
-    }
-
-    private void showInterstitial() {
-        if (interstitialAd != null && interstitialAd.isLoaded()) {
-            interstitialAd.show();
-        } else {
-//            Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show();
-        }
+    public void adClosed() {
+        generatePDF(recepi.getText().toString(), secondModel.getPic2(), samgri, rit);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -372,7 +315,10 @@ public class ThirdActivity extends AppCompatActivity {
 //        if(! dir.exists())
 //            dir.mkdirs();
 
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        ContextWrapper cr = new ContextWrapper(ThirdActivity.this);
+        File path = cr.getDir("Gujarati_recipe",MODE_PRIVATE);
+
+//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         if(! path.exists())
             path.mkdirs();
 
@@ -392,7 +338,9 @@ public class ThirdActivity extends AppCompatActivity {
 
     public void shareFile(File myFile){
         Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-        Uri uri = FileProvider.getUriForFile(ThirdActivity.this, "com.example.homefolder.example.provider", myFile);
+//        Uri uri = FileProvider.getUriForFile(ThirdActivity.this, "com.example.homefolder.example.provider", myFile);
+
+        Uri uri = Uri.fromFile(myFile);
 
         if(myFile.exists()) {
             intentShareFile.setType("application/pdf");
@@ -405,39 +353,40 @@ public class ThirdActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkPermission() {
-        // checking of permissions.
-        int permission1 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
-        return permission1 == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermission() {
-        // requesting permissions if not provided.
-        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(requestCode == PERMISSION_REQUEST_CODE){
-            if(grantResults.length > 0){
-
-                // after requesting permissions we are showing
-                // users a toast message of permission granted.
-                boolean writeStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                boolean readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-
-                if(writeStorage && readStorage){
-                    generatePDF(recepi.getText().toString(), secondModel.getPic2(), samgri, rit);
-                }else{
-                    Toast.makeText(this, "Permission Denined.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
+//    private boolean checkPermission() {
+//        // checking of permissions.
+//        int permission1 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+//        int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+//        return permission1 == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED;
+//    }
+//
+//    private void requestPermission() {
+//        // requesting permissions if not provided.
+//        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if(requestCode == PERMISSION_REQUEST_CODE){
+//            if(grantResults.length > 0){
+//
+//                // after requesting permissions we are showing
+//                // users a toast message of permission granted.
+//                boolean writeStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+//                boolean readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+//
+//                if(writeStorage && readStorage){
+//                    showInterstitial();
+////                    generatePDF(recepi.getText().toString(), secondModel.getPic2(), samgri, rit);
+//                }else{
+//                    Toast.makeText(this, "Permission Denined.", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void onResume() {

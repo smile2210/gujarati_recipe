@@ -57,7 +57,8 @@
                 android:background="@drawable/pdf"
                 android:backgroundTint="#ffffff"
                 android:paddingHorizontal="2dp"
-                android:paddingVertical="8dp"></androidx.appcompat.widget.AppCompatButton>
+                android:paddingVertical="8dp"
+                android:visibility="gone"></androidx.appcompat.widget.AppCompatButton>
 
         </LinearLayout>
 

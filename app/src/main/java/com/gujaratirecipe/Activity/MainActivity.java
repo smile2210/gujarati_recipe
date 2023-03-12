@@ -25,6 +25,7 @@ import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
+import com.gujaratirecipe.BaseActivity;
 import com.gujaratirecipe.BuildConfig;
 import com.gujaratirecipe.Database;
 import com.gujaratirecipe.Adapter.MainAdapter;
