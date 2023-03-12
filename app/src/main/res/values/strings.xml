@@ -2,11 +2,11 @@
     <string name="app_name">Gujarati Recipe</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="banner_ad_unit_id">ca-app-pub-5224318517283869/2847665823</string>
+<!--    <string name="banner_ad_unit_id">ca-app-pub-5224318517283869/2847665823</string>-->
 
     <!--TODO liveid-->
-<!--    <string name="fullpage_ad_id">ca-app-pub-5224318517283869/7628232091</string>-->
+    <string name="fullpage_ad_id">ca-app-pub-5224318517283869/7628232091</string>
 
     <!--TODO testid-->
-    <string name="fullpage_ad_id">ca-app-pub-3940256099942544/1033173712</string>
+<!--    <string name="fullpage_ad_id">ca-app-pub-3940256099942544/1033173712</string>-->
 </resources>

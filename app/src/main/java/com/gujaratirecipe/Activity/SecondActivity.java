@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,12 +39,19 @@ public class SecondActivity extends BaseActivity {
     ListView list;
     int selectedPosition = -1;
     List<SecondModel> secondModelList = new ArrayList<>();
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
         loadAd();
+
+        progressDialog = new ProgressDialog(SecondActivity.this);
+        progressDialog.setTitle(getString(R.string.app_name));
+        progressDialog.setMessage("Please Wait");
+        progressDialog.show();
 
         back = findViewById(R.id.back);
         image = findViewById(R.id.image);
@@ -63,9 +71,9 @@ public class SecondActivity extends BaseActivity {
         final int[] pic2 = getIntent().getExtras().getIntArray("pic2");
 
 
-        for (int i = 0; i < pic2.length; i++) {
+        for (int j : pic2) {
             SecondModel secondModel = new SecondModel();
-            secondModel.setPic2(pic2[i]);
+            secondModel.setPic2(j);
             secondModelList.add(secondModel);
         }
 
@@ -73,10 +81,11 @@ public class SecondActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                progressDialog.dismiss();
                 SecondAdapter secondAdapter = new SecondAdapter(SecondActivity.this, secondModelList, MainAdapter.modelList);
                 list.setAdapter(secondAdapter);
             }
-        },1500);
+        },2500);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

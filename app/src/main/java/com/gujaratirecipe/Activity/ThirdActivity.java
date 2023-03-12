@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -62,9 +63,9 @@ public class ThirdActivity extends BaseActivity {
     TextView title, samgritext, rittext;
     ImageView recipe_image;
     Bitmap bitmap;
-
     int pageHeight = 1520;
     int pagewidth = 792;
+    ProgressDialog progressDialog;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -73,6 +74,11 @@ public class ThirdActivity extends BaseActivity {
         setContentView(R.layout.activity_third);
 
         loadAd();
+
+        progressDialog = new ProgressDialog(ThirdActivity.this);
+        progressDialog.setTitle(getString(R.string.app_name));
+        progressDialog.setMessage("Please Wait");
+        progressDialog.show();
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -187,7 +193,6 @@ public class ThirdActivity extends BaseActivity {
         samgri = (getIntent().getStringExtra("sahitya"));
         rit = (getIntent().getStringExtra("kruti"));
 
-
         title.setText(recepi.getText().toString());
         Glide.with(ThirdActivity.this).load(secondModel.getPic2()).into(recipe_image);
         samgritext.setText(samgri);
@@ -205,6 +210,7 @@ public class ThirdActivity extends BaseActivity {
     }
 
     public void adLoaded() {
+        progressDialog.dismiss();
         shareAsPdf.setVisibility(View.VISIBLE);
     }
 
@@ -350,6 +356,7 @@ public class ThirdActivity extends BaseActivity {
             intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
             intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Sharing File from Gujarati Recipe...");
             startActivity(Intent.createChooser(intentShareFile, "Share File Gujarati Recipe"));
+            finish();
         }
     }
 
