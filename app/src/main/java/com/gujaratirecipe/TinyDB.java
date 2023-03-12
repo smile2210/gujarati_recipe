@@ -484,81 +484,6 @@ public class TinyDB {
         putListString(key, newList);
     }
 
-    /**
-     * Put ObJect any type into SharedPrefrences with 'key' and save
-     * @param key SharedPreferences key
-     * @param obj is the Object you want to put
-     */
-    public void putObject(String key, Object obj){
-    	checkForNullKey(key);
-    	Gson gson = new Gson();
-    	putString(key, gson.toJson(obj));
-    }
-
-    public void putListObject(String key, ArrayList<Object> objArray){
-    	checkForNullKey(key);
-    	Gson gson = new Gson();
-    	ArrayList<String> objStrings = new ArrayList<String>();
-    	for(Object obj : objArray){
-    		objStrings.add(gson.toJson(obj));
-    	}
-    	putListString(key, objStrings);
-    }
-
-    /**
-     * Remove SharedPreferences item with 'key'
-     * @param key SharedPreferences key
-     */
-    public void remove(String key) {
-        preferences.edit().remove(key).apply();
-    }
-
-    /**
-     * Delete image file at 'path'
-     * @param path path of image file
-     * @return true if it successfully deleted, false otherwise
-     */
-    public boolean deleteImage(String path) {
-        return new File(path).delete();
-    }
-
-
-    /**
-     * Clear SharedPreferences (remove everything)
-     */
-    public void clear() {
-        preferences.edit().clear().apply();
-    }
-
-    /**
-     * Retrieve all values from SharedPreferences. Do not modify collection return by method
-     * @return a Map representing a list of key/value pairs from SharedPreferences
-     */
-    public Map<String, ?> getAll() {
-        return preferences.getAll();
-    }
-
-
-    /**
-     * Register SharedPreferences change listener
-     * @param listener listener object of OnSharedPreferenceChangeListener
-     */
-    public void registerOnSharedPreferenceChangeListener(
-            SharedPreferences.OnSharedPreferenceChangeListener listener) {
-
-        preferences.registerOnSharedPreferenceChangeListener(listener);
-    }
-
-    /**
-     * Unregister SharedPreferences change listener
-     * @param listener listener object of OnSharedPreferenceChangeListener to be unregistered
-     */
-    public void unregisterOnSharedPreferenceChangeListener(
-            SharedPreferences.OnSharedPreferenceChangeListener listener) {
-
-        preferences.unregisterOnSharedPreferenceChangeListener(listener);
-    }
-
 
     /**
      * Check if external storage is writable or not
@@ -577,20 +502,6 @@ public class TinyDB {
 
         return Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-    }
-
-    /**
-     * Checks if an object exists in Memory
-     * @param key the pref key to check
-     */
-    public boolean objectExists(String key){
-        String gottenString = getString(key);
-        if(gottenString.isEmpty()){
-            return false;
-        }else {
-            return true;
-        }
-
     }
 
     /**

@@ -93,6 +93,17 @@ public class SecondActivity extends BaseActivity {
 
                 selectedPosition = i;
                 showInterstitial(SecondActivity.this);
+
+                if (selectedPosition >= 0){
+                    Intent intent = new Intent(SecondActivity.this,ThirdActivity.class);
+                    intent.putExtra("image2",secondModelList.get(selectedPosition));
+                    intent.putExtra("name",MainAdapter.modelList.get(selectedPosition).getName());
+                    intent.putExtra("sahitya",MainAdapter.modelList.get(selectedPosition).getSahitya());
+                    intent.putExtra("kruti",MainAdapter.modelList.get(selectedPosition).getKruti());
+                    intent.putExtra("type_id",MainAdapter.modelList.get(selectedPosition).getType_id());
+                    intent.putExtra("row_id",MainAdapter.modelList.get(selectedPosition).getRow_id());
+                    startActivity(intent);
+                }
             }
         });
 
@@ -100,16 +111,7 @@ public class SecondActivity extends BaseActivity {
 
 
     public void adClosed() {
-        if (selectedPosition >= 0){
-            Intent intent = new Intent(SecondActivity.this,ThirdActivity.class);
-            intent.putExtra("image2",secondModelList.get(selectedPosition));
-            intent.putExtra("name",MainAdapter.modelList.get(selectedPosition).getName());
-            intent.putExtra("sahitya",MainAdapter.modelList.get(selectedPosition).getSahitya());
-            intent.putExtra("kruti",MainAdapter.modelList.get(selectedPosition).getKruti());
-            intent.putExtra("type_id",MainAdapter.modelList.get(selectedPosition).getType_id());
-            intent.putExtra("row_id",MainAdapter.modelList.get(selectedPosition).getRow_id());
-            startActivity(intent);
-        }
+
 
     }
 

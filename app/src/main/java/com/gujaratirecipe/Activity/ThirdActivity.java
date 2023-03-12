@@ -203,7 +203,7 @@ public class ThirdActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 showInterstitial(ThirdActivity.this);
-
+                generatePDF(recepi.getText().toString(), secondModel.getPic2(), samgri, rit);
             }
         });
 
@@ -232,7 +232,7 @@ public class ThirdActivity extends BaseActivity {
 
 
     public void adClosed() {
-        generatePDF(recepi.getText().toString(), secondModel.getPic2(), samgri, rit);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
